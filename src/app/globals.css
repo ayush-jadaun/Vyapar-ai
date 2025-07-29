@@ -1,26 +1,192 @@
+/* globals.css - Tailwind v4 setup */
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ===== Theme Configuration ===== */
+@theme {
+  /* Font Family */
+  --font-family-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+  /* Colors - Fixed HSL format */
+  --color-background: 0 0% 100%;
+  --color-foreground: 215 25% 27%;
+  --color-border: 214 32% 91%;
+  --color-input: 214 32% 91%;
+  --color-ring: 217 91% 50%;
+
+  --color-card: 0 0% 100%;
+  --color-card-foreground: 215 25% 27%;
+  --color-popover: 0 0% 100%;
+  --color-popover-foreground: 215 25% 27%;
+
+  --color-primary: 217 91% 50%;
+  --color-primary-foreground: 0 0% 100%;
+
+  --color-secondary: 214 32% 96%;
+  --color-secondary-foreground: 215 25% 27%;
+
+  --color-success: 142 71% 45%;
+  --color-success-foreground: 0 0% 100%;
+
+  --color-destructive: 0 84% 60%;
+  --color-destructive-foreground: 0 0% 100%;
+
+  --color-muted: 214 32% 96%;
+  --color-muted-foreground: 215 16% 57%;
+  
+  --color-accent: 214 32% 96%;
+  --color-accent-foreground: 215 25% 27%;
+
+  /* Sidebar colors */
+  --color-sidebar-background: 0 0% 98%;
+  --color-sidebar-foreground: 240 5.3% 26.1%;
+  --color-sidebar-primary: 240 5.9% 10%;
+  --color-sidebar-primary-foreground: 0 0% 98%;
+  --color-sidebar-accent: 240 4.8% 95.9%;
+  --color-sidebar-accent-foreground: 240 5.9% 10%;
+  --color-sidebar-border: 220 13% 91%;
+  --color-sidebar-ring: 217.2 91.2% 59.8%;
+
+  /* Border Radius */
+  --radius: 0.75rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Custom shadows */
+  --shadow-soft: 0 4px 20px hsl(217 91% 50% / 0.1);
+  --shadow-card: 0 2px 12px hsl(215 25% 27% / 0.08);
+  --shadow-button: 0 4px 14px hsl(217 91% 50% / 0.25);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ===== Base Styles ===== */
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-sans);
+    font-weight: 600;
+    letter-spacing: -0.025em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ===== Component Classes ===== */
+@layer components {
+  /* Gradient utilities */
+  .hero-gradient {
+    background: linear-gradient(135deg, hsl(var(--color-primary) / 0.05), hsl(var(--color-success) / 0.05));
+  }
+  
+  .primary-gradient {
+    background: linear-gradient(135deg, hsl(var(--color-primary)), hsl(var(--color-primary) / 0.8));
+  }
+  
+  .success-gradient {
+    background: linear-gradient(135deg, hsl(var(--color-success)), hsl(var(--color-success) / 0.8));
+  }
+
+  /* Shadow utilities */
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .button-shadow {
+    box-shadow: var(--shadow-button);
+  }
+  
+  .soft-shadow {
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* Transition utilities */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .transition-bounce {
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-from-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Animation utilities */
+@layer utilities {
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+  
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+  
+  .animate-slide-in-top {
+    animation: slide-in-from-top 0.3s ease-out;
+  }
+  
+  .animate-slide-in-bottom {
+    animation: slide-in-from-bottom 0.3s ease-out;
+  }
 }
