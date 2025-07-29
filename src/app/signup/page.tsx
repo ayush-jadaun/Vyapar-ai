@@ -7,9 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -27,18 +29,31 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  const res = await axios.post('/api/signup', formData);
-  if(res.status===201){
-    toast.success('Login Successful!.');}
-    else if(res.status===409){
-      toast.error('User already exists!, try logging in.');
+  e.preventDefault();
+
+  try {
+    const res = await axios.post('/api/signup', {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+      company: formData.company,
+    });
+
+    if (res.status === 201) {
+      toast.success('Signup successful! Please log in.');
+      router.push('/login');
     }
-  else{
-    toast.error('Sign Up failed,try again!');
+  } catch (error) {
+    if (error.response?.status === 409) {
+      toast.error('User already exists, try logging in.');
+    } else if (error.response?.status === 400) {
+      toast.error('All fields are required!');
+    } else {
+      toast.error('Signup failed, try again!');
+    }
   }
-    console.log('Signup attempt:', formData);
-  };
+};
 
   const benefits = [
     '30-day free trial',
