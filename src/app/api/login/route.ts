@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import User from "@/models/user";
-import connectDB from "../../../../lib/db";
+import connectDB from "../../../lib/db";
 
 export async function POST(req: Request) {
   try {
@@ -10,7 +10,10 @@ export async function POST(req: Request) {
 
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Invalid credentials" },
+        { status: 401 }
+      );
     }
 
     const token = jwt.sign(
