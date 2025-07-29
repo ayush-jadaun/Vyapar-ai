@@ -5,15 +5,27 @@ import { Button } from '@/components/ui/buttons';
 import { Label } from '@/components/ui/label';
 import { Phone, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+  const res =  await axios.post('/api/login', { email, password });
+  if(res.status===401){
+    toast.error(`Invalid credential!${res.data.error.message}`);
+  }else{
+     toast.success('Login Successful!.');
+    router.push('/');
+    // router.push('/dashboard'); todo
+  }
     console.log('Login attempt:', { email, password });
   };
 

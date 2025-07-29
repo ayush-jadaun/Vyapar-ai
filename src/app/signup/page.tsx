@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/buttons';
 import { Phone, Eye, EyeOff, ArrowLeft, Check } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,9 +26,17 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
+  const res = await axios.post('/api/signup', formData);
+  if(res.status===201){
+    toast.success('Login Successful!.');}
+    else if(res.status===409){
+      toast.error('User already exists!, try logging in.');
+    }
+  else{
+    toast.error('Sign Up failed,try again!');
+  }
     console.log('Signup attempt:', formData);
   };
 
